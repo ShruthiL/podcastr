@@ -1,3 +1,4 @@
+https://app.codeship.com/projects/09c949c0-6624-0138-9e24-1e0c3c29d5e8/status?branch=master
 # README
 
 Project Name: Podcastr
