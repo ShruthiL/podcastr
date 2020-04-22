@@ -27,7 +27,7 @@ const PodcastsIndexContainer = (props) => {
   });
 
   if (podcasts.length === 0) {
-    return <p>Loading...</p>;
+    return <p>No podcasts yet.</p>;
   } else {
     return <div>{podcastTiles}</div>;
   }
