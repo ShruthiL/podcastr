@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_04_21_192129) do
     t.string "url", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["url"], name: "index_podcasts_on_url", unique: true
   end
 
   create_table "users", force: :cascade do |t|

@@ -9,6 +9,4 @@ Rails.application.routes.draw do
       resources :podcasts, only: [:index]
     end
   end
-  
-
 end
