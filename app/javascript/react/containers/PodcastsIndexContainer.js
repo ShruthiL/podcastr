@@ -22,15 +22,15 @@ const PodcastsIndexContainer = (props) => {
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
 
-  const podcastTiles = podcasts.map((podcast) => {
-    return <PodcastTile key={podcast.id} podcast={podcast} />;
-  });
-
+  let podcastTiles;
   if (podcasts.length === 0) {
-    return <p>No podcasts yet.</p>;
+    podcastTiles = <div><p>No podcasts yet</p></div>
   } else {
-    return <div>{podcastTiles}</div>;
+    podcastTiles = podcasts.map((podcast) => {
+      return <PodcastTile key={podcast.id} podcast={podcast} />;
+    });
   }
+  return <div>{podcastTiles}</div>;
 };
 
 export default PodcastsIndexContainer;
