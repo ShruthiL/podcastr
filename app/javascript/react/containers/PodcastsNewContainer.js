@@ -39,7 +39,6 @@ const PodcastsNewContainer = (props) => {
         [url]: "url must include full HTTP address",
       };
     }
-    debugger;
     setErrors(submitErrors);
     return _.isEmpty(submitErrors);
   };
@@ -59,29 +58,28 @@ const PodcastsNewContainer = (props) => {
           "Content-Type": "application/json",
         },
       })
-        .then((response) => {
-          if (response.ok) {
-            return response;
-          } else {
-            let test = response.json().then((body) => setErrors(body.error));
-            let errorMessage = `${response.status} (${response.statusText})`;
-            let error = new Error(errorMessage);
-            throw error;
-          }
-        })
-        .then((response) => response.json())
-        .then((body) => {
-          let newPodcast = body.podcast;
-          setNewRecord(newPodcast);
-          setShouldRedirect(true);
-        })
-        .catch((error) => console.error(`Error in fetch: ${error.message}`));
+      .then((response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let test = response.json().then((body) => setErrors(body.error));
+          let errorMessage = `${response.status} (${response.statusText})`;
+          let error = new Error(errorMessage);
+          throw error;
+        }
+      })
+      .then((response) => response.json())
+      .then((body) => {
+        let newPodcast = body.podcast;
+        setNewRecord(newPodcast);
+        setShouldRedirect(true);
+      })
+      .catch((error) => console.error(`Error in fetch: ${error.message}`));
     }
   };
 
   if (shouldRedirect) {
-    return <Redirect to="/podcasts" />;
-    // <Redirect to=`/podcast/${newRecord.id}`/>
+    return <Redirect to={`/podcasts/${newRecord.id}`} />;
   }
 
   return (
@@ -113,4 +111,5 @@ const PodcastsNewContainer = (props) => {
     </div>
   );
 };
+
 export default PodcastsNewContainer;
