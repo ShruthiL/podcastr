@@ -1,7 +1,7 @@
 class Api::V1::PodcastsController < ApplicationController
 
     protect_from_forgery unless: -> { request.format.json? }
-    
+
     def index
         render json: Podcast.all
     end
@@ -13,5 +13,9 @@ class Api::V1::PodcastsController < ApplicationController
         else
             render json: { error: podcast.errors.full_messages }, status: :unprocessable_entity
         end
+    end
+
+    def show
+        render json: Podcast.find(params[:id])
     end
 end
