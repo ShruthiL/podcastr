@@ -30,7 +30,11 @@ const PodcastsIndexContainer = (props) => {
       return <PodcastTile key={podcast.id} podcast={podcast} />;
     });
   }
-  return <div>{podcastTiles}</div>;
+  return(
+    <div>
+      {podcastTiles}
+    </div>
+  );
 };
 
 export default PodcastsIndexContainer;
