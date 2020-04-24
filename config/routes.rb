@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   get '/podcasts', to: "static_pages#index"
   get '/podcasts/:id', to: "static_pages#index"
 
-
   namespace :api do
     namespace :v1 do
       resources :podcasts, only: [:index, :show]
