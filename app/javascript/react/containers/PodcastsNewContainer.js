@@ -33,7 +33,7 @@ const PodcastsNewContainer = (props) => {
       }
     }
 
-    if (!podcastRecord["url"].includes("http://")) {
+    if (!podcastRecord["url"].includes("http://") && (!podcastRecord["url"].includes("https://"))) {
       submitErrors = {
         ...submitErrors,
         [url]: "url must include full HTTP address",

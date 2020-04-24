@@ -64,4 +64,54 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
         expect(response_body["url"]).to_not eq podcast2.url
     end
   end
+
+  describe "POST#new" do
+    let!(:new_podcast_hash) { { podcast: { name: "Reply All", url: "https://gimletmedia.com/shows/reply-all" } } }
+
+    it "creates a new Podcast record" do
+        previous_count = Podcast.count
+        post :create, params: new_podcast_hash, format: :json
+        new_count = Podcast.count
+
+        expect(new_count).to be (previous_count + 1)
+    end
+
+    it "returns the new Podcast as json" do
+        post :create, params: new_podcast_hash, format: :json
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["podcast"].length).to eq 5
+        expect(response_body["podcast"]["name"]).to eq "Reply All"
+        expect(response_body["podcast"]["url"]).to eq "https://gimletmedia.com/shows/reply-all"
+    end
+
+    context "when a malformed request is made" do
+        let!(:bad_podcast_hash_1) { { podcast: { url: "https://gimletmedia.com/shows/reply-all" } } }
+        let!(:bad_podcast_hash_2) { { podcast: { name: "Reply All" } } }
+
+        it "returns an error if podcast name is not provided" do
+            previous_count = Podcast.count
+            post :create, params: bad_podcast_hash_1, format: :json
+            new_count = Podcast.count
+
+            expect(new_count).to eq previous_count
+        end
+
+        it "returns an error if podcast url is not provided" do
+            previous_count = Podcast.count
+            post :create, params: bad_podcast_hash_2, format: :json
+            new_count = Podcast.count
+
+            expect(new_count).to eq previous_count
+        end
+
+        it "returns vaidation errors" do
+            post :create, params: bad_podcast_hash_1, format: :json
+            response_body = JSON.parse(response.body)
+
+            expect(response_body["error"][0]).to eq "Name can't be blank"
+        end
+    end
+  end
 end
