@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import PodcastsIndexContainer from "../containers/PodcastsIndexContainer";
+import PodcastShowContainer from "../containers/PodcastShowContainer";
 
 export const App = (props) => {
   return (
@@ -10,6 +11,7 @@ export const App = (props) => {
         <Switch>
           <Route exact path="/" component={PodcastsIndexContainer} />
           <Route exact path="/podcasts" component={PodcastsIndexContainer} />
+          <Route exact path="/podcast/:id" component={PodcastShowContainer} />
         </Switch>
       </BrowserRouter>
     </div>
