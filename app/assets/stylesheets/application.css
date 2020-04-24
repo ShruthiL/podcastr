@@ -32,13 +32,13 @@ body {
 }
 
 .top-bar a{
-color:#293241;
-font-weight: bolder;
+    color:#293241;
+    font-weight: bolder;
 }
 
 .top-bar h1{
-font-family: 'Play', sans-serif;
-margin-left: 20px;
+    font-family: 'Play', sans-serif;
+    margin-left: 20px;
 }
 
 .sticky {
