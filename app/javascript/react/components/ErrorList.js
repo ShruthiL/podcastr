@@ -1,28 +1,25 @@
-import React from 'react'
+import React from "react";
 
 const ErrorList = (props) => {
-  const errantFields = props.errors
+  const errantFields = Object.keys(props.errors);
+  // debugger;
 
   if (errantFields.length > 0) {
-    let index = 0
+    let index = 0;
 
-    const errantFieldsArray = errantFields.map(field => {
-      index++
-      return (
-        <li key={index}>
-          {props.errors[field]}
-        </li>
-      )
-    })
+    const errantFieldsArray = errantFields.map((field) => {
+      index++;
+      return <li key={index}>{props.errors[field]}</li>;
+    });
 
     return (
       <div className="callout alert">
         <ul>{errantFieldsArray}</ul>
       </div>
-    )
+    );
   } else {
-    return ""
+    return "";
   }
-}
+};
 
-export default ErrorList
+export default ErrorList;

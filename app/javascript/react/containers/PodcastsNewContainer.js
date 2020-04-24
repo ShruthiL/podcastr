@@ -1,109 +1,116 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from 'react-router-dom';
-import _ from "lodash"
+import { Redirect } from "react-router-dom";
+import _ from "lodash";
 
-import ErrorList from '../components/ErrorList.js'
+import ErrorList from "../components/ErrorList.js";
 
 const PodcastsNewContainer = (props) => {
-    const fields = ["name", "url"]
-    const [podcastRecord, setPodcastRecord] = useState({
-        name: "",
-        url: "",
-    })
-    const [newRecord, setNewRecord] = useState({})
-    const [shouldRedirect, setShouldRedirect] = useState(false)
-    const [errors, setErrors] = useState({})
+  const fields = ["name", "url"];
+  const [podcastRecord, setPodcastRecord] = useState({
+    name: "",
+    url: "",
+  });
+  const [newRecord, setNewRecord] = useState({});
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [errors, setErrors] = useState({});
 
-    const handleChange = (event) => {
-        setPodcastRecord({
-            ...podcastRecord,
-            [event.currentTarget.id]: event.currentTarget.value
-        })
-    }
+  const handleChange = (event) => {
+    setPodcastRecord({
+      ...podcastRecord,
+      [event.currentTarget.id]: event.currentTarget.value,
+    });
+  };
 
-    const validForSubmission = () => {
-        let submitErrors = {}
-    
-        for (const field in fields) {
-          if (podcastRecord[field].trim() === "") {
-            submitErrors = {
-              ...submitErrors,
-              [field]: `${field} is blank`
-            }
-          }
-        }
-    
-        setErrors(submitErrors)
-        return _.isEmpty(submitErrors)
+  const validForSubmission = () => {
+    let submitErrors = {};
+
+    for (const field of fields) {
+      if (podcastRecord[field].trim() === "") {
+        submitErrors = {
+          ...submitErrors,
+          [field]: `${field} is blank`,
+        };
       }
-
-    const onSubmit = (event) => {
-        event.preventDefault()
-
-        if (validForSubmission()) {
-            let formPayload = {
-                podcast: podcastRecord
-            }
-            fetch("/api/v1/podcasts", {
-                credentials: "same-origin",
-                method: "POST",
-                body: JSON.stringify(formPayload),
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response
-                } else {
-                    let errorMessage = `${response.status} (${response.statusText})`
-                    let error = new Error(errorMessage)
-                    throw error
-                }
-            })
-            .then(response => response.json())
-            .then(body => {
-                let newPodcast = body.podcast
-                setNewRecord(newPodcast)
-                setShouldRedirect(true)
-            })
-            .catch(error => console.error(`Error in fetch: ${error.message}`))
-        }
     }
 
-    if (shouldRedirect) {
-        return <Redirect to='/podcasts' />
-        // <Redirect to=`/podcast/${newRecord.id}`/>
+    if (!podcastRecord["url"].includes("http://")) {
+      submitErrors = {
+        ...submitErrors,
+        [url]: "url must include full HTTP address",
+      };
     }
+    debugger;
+    setErrors(submitErrors);
+    return _.isEmpty(submitErrors);
+  };
 
-    return (
-        <div>
-            <ErrorList errors={errors}/>
-            <form className="new-podcast" onSubmit={onSubmit}>
-                <label>
-                    Name:
-                        <input
-                            type="text"
-                            id="name"
-                            onChange={handleChange}
-                            value={podcastRecord.name}
-                        />
-                </label>
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (validForSubmission()) {
+      let formPayload = {
+        podcast: podcastRecord,
+      };
+      fetch("/api/v1/podcasts", {
+        credentials: "same-origin",
+        method: "POST",
+        body: JSON.stringify(formPayload),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            let test = response.json().then((body) => setErrors(body.error));
+            let errorMessage = `${response.status} (${response.statusText})`;
+            let error = new Error(errorMessage);
+            throw error;
+          }
+        })
+        .then((response) => response.json())
+        .then((body) => {
+          let newPodcast = body.podcast;
+          setNewRecord(newPodcast);
+          setShouldRedirect(true);
+        })
+        .catch((error) => console.error(`Error in fetch: ${error.message}`));
+    }
+  };
 
-                <label>
-                    URL:
-                        <input
-                            type="text"
-                            id="url"
-                            onChange={handleChange}
-                            value={podcastRecord.url}
-                        />
-                </label>
+  if (shouldRedirect) {
+    return <Redirect to="/podcasts" />;
+    // <Redirect to=`/podcast/${newRecord.id}`/>
+  }
 
-                <input className="button" type="submit" value="Submit" />
-            </form >
-        </div>
-    )
-}
-export default PodcastsNewContainer
+  return (
+    <div>
+      <ErrorList errors={errors} />
+      <form className="new-podcast" onSubmit={onSubmit}>
+        <label>
+          Name:
+          <input
+            type="text"
+            id="name"
+            onChange={handleChange}
+            value={podcastRecord.name}
+          />
+        </label>
+
+        <label>
+          URL:
+          <input
+            type="text"
+            id="url"
+            onChange={handleChange}
+            value={podcastRecord.url}
+          />
+        </label>
+
+        <input className="button" type="submit" value="Submit" />
+      </form>
+    </div>
+  );
+};
+export default PodcastsNewContainer;
