@@ -14,11 +14,11 @@ describe("PodcastTile", () => {
     );
   });
 
-  it("should render an p element", () => {
-    expect(wrapper.find("p")).toBeDefined();
+  it("should render an a element", () => {
+    expect(wrapper.find("a")).toBeDefined();
   });
 
-  it("should render an p element containing the text via props", () => {
-    expect(wrapper.find("p").text()).toBe("Podcast1");
+  it("should render an a element containing the text via props", () => {
+    expect(wrapper.find("a").text()).toBe("Podcast1");
   });
 });
