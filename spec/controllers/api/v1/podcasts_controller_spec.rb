@@ -110,10 +110,11 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       end
 
       it "returns an error if name and url are blank" do
-        post :create, params: bad_podcast_hash_1, format: :json
+        post :create, params: bad_podcast_hash_5, format: :json
         response_body = JSON.parse(response.body)
 
         expect(response_body["error"][0]).to eq "Name can't be blank"
+        expect(response_body["error"][1]).to eq "Url can't be blank"
       end
 
       it "returns an error if name is blank" do
