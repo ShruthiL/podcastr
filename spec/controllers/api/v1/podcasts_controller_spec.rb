@@ -93,20 +93,24 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       let!(:bad_podcast_hash_4) { { podcast: { name: "Reply All", url: "https://gimletmedia.com/shows/reply-all" } } }
       let!(:bad_podcast_hash_5) { { podcast: { name: "", url: "" } } }
 
-      it "does not create a new podcast if podcast name is not provided" do
+      it "does not create a new podcast and return error if podcast name is not provided" do
         previous_count = Podcast.count
         post :create, params: bad_podcast_hash_1, format: :json
         new_count = Podcast.count
-
+        response_body = JSON.parse(response.body)
+        
         expect(new_count).to eq previous_count
+        expect(response_body["error"][0]).to eq "Name can't be blank"
       end
 
-      it "does not create a new podcast if podcast url is not provided" do
+      it "does not create a new podcast and return error if podcast url is not provided" do
         previous_count = Podcast.count
         post :create, params: bad_podcast_hash_2, format: :json
         new_count = Podcast.count
+        response_body = JSON.parse(response.body)
 
         expect(new_count).to eq previous_count
+        expect(response_body["error"][0]).to eq "Url can't be blank"
       end
 
       it "returns an error if name and url are blank" do
@@ -115,20 +119,6 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
 
         expect(response_body["error"][0]).to eq "Name can't be blank"
         expect(response_body["error"][1]).to eq "Url can't be blank"
-      end
-
-      it "returns an error if name is blank" do
-        post :create, params: bad_podcast_hash_1, format: :json
-        response_body = JSON.parse(response.body)
-
-        expect(response_body["error"][0]).to eq "Name can't be blank"
-      end
-
-      it "returns an error if url is blank" do
-        post :create, params: bad_podcast_hash_2, format: :json
-        response_body = JSON.parse(response.body)
-
-        expect(response_body["error"][0]).to eq "Url can't be blank"
       end
 
       it "returns an error if url does not include http protocol" do
