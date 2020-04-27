@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= csrf_meta_tags %>
-  <link href="https://fonts.googleapis.com/css?family=Play&display=swap" rel="stylesheet">
 </head>
 <body>
-  
   <div class="top-bar-container sticky-container" data-sticky-container>
     <div class="sticky is-stuck is-at-top" data-sticky data-options="marginTop:0;">
       <nav class="top-bar">
         <h1><a href="/">ρodcastr</a></h1>
-
         <section class="top-bar-section">
           <div class="right">
             <%- if current_user -%>
@@ -27,7 +24,6 @@
       </nav>
     </div>
   </div>
-
   <div class="content grid-container">
     <%- flash.each do |key, value| -%>
       <div class="flash flash-<%= key %>">
@@ -38,14 +34,14 @@
     <%= yield %>
 
     <%= javascript_include_tag 'application' %>
-    
-    <%- if Rails.env.development? || Rails.env.test? -%> 
+
+    <%- if Rails.env.development? || Rails.env.test? -%>
       <%= javascript_tag do %>
         window.railsEnv = '<%= Rails.env %>'
       <%- end -%>
     <%- end -%>
     <%= javascript_pack_tag 'application' %>
-    
+
     <%= yield :extra_footer %>
   </div>
 </body>
