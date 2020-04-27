@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
+  const [user, setUser] = [{}];
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -17,7 +18,8 @@ const PodcastShowContainer = (props) => {
       })
       .then((response) => response.json())
       .then((body) => {
-        setPodcast(body);
+        setPodcast(body[1]);
+        setUser(body[0]);
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
