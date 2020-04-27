@@ -1,5 +1,4 @@
 class Api::V1::PodcastsController < ApplicationController
-
     protect_from_forgery unless: -> { request.format.json? }
 
     def index
@@ -7,7 +6,7 @@ class Api::V1::PodcastsController < ApplicationController
     end
 
     def create
-        podcast = Podcast.new(name: params["podcast"]["name"], url: params["podcast"]["url"])
+        podcast = Podcast.new(podcast_params)
         if podcast.save
             render json: { podcast: podcast }
         else
@@ -17,5 +16,11 @@ class Api::V1::PodcastsController < ApplicationController
 
     def show
         render json: Podcast.find(params[:id])
+    end
+
+    private
+
+    def podcast_params
+        params.require(:podcast).permit(:name, :url)
     end
 end

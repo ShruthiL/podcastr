@@ -4,12 +4,12 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
   describe "GET#index" do
     let!(:podcast1) { Podcast.create(
       name: "podcast1",
-      url: "www.podcast1.com")
+      url: "http://www.podcast1.com")
     }
 
     let!(:podcast2) { Podcast.create(
       name: "podcast2",
-      url: "www.podcast2.com")
+      url: "http://www.podcast2.com")
     }
 
     it "returns a successful response status and a content type of json" do
@@ -36,12 +36,12 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
   describe "GET#show" do
     let!(:podcast1) { Podcast.create(
       name: "podcast1",
-      url: "www.podcast1.com")
+      url: "http://www.podcast1.com")
     }
 
     let!(:podcast2) { Podcast.create(
       name: "podcast2",
-      url: "www.podcast2.com")
+      url: "http://www.podcast2.com")
     }
 
     it "returns a successful response status and a content type of json" do
@@ -73,7 +73,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       post :create, params: new_podcast_hash, format: :json
       new_count = Podcast.count
 
-      expect(new_count).to be (previous_count + 1)
+      expect(new_count).to eq(previous_count + 1)
     end
 
     it "returns the new Podcast as json" do
@@ -89,8 +89,11 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
     context "when a malformed request is made" do
       let!(:bad_podcast_hash_1) { { podcast: { url: "https://gimletmedia.com/shows/reply-all" } } }
       let!(:bad_podcast_hash_2) { { podcast: { name: "Reply All" } } }
+      let!(:bad_podcast_hash_3) { { podcast: { name: "Reply All", url: "gimletmedia.com" } } }
+      let!(:bad_podcast_hash_4) { { podcast: { name: "Reply All", url: "https://gimletmedia.com/shows/reply-all" } } }
+      let!(:bad_podcast_hash_5) { { podcast: { name: "", url: "" } } }
 
-      it "returns an error if podcast name is not provided" do
+      it "does not create a new podcast if podcast name is not provided" do
         previous_count = Podcast.count
         post :create, params: bad_podcast_hash_1, format: :json
         new_count = Podcast.count
@@ -98,7 +101,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
         expect(new_count).to eq previous_count
       end
 
-      it "returns an error if podcast url is not provided" do
+      it "does not create a new podcast if podcast url is not provided" do
         previous_count = Podcast.count
         post :create, params: bad_podcast_hash_2, format: :json
         new_count = Podcast.count
@@ -106,11 +109,40 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
         expect(new_count).to eq previous_count
       end
 
-      it "returns vaidation errors" do
+      it "returns an error if name and url are blank" do
         post :create, params: bad_podcast_hash_1, format: :json
         response_body = JSON.parse(response.body)
 
         expect(response_body["error"][0]).to eq "Name can't be blank"
+      end
+
+      it "returns an error if name is blank" do
+        post :create, params: bad_podcast_hash_1, format: :json
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["error"][0]).to eq "Name can't be blank"
+      end
+
+      it "returns an error if url is blank" do
+        post :create, params: bad_podcast_hash_2, format: :json
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["error"][0]).to eq "Url can't be blank"
+      end
+
+      it "returns an error if url does not include http protocol" do
+        post :create, params: bad_podcast_hash_3, format: :json
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["error"][0]).to eq "Url is invalid"
+      end
+
+      it "returns an error if url is not unique" do
+        post :create, params: bad_podcast_hash_4, format: :json
+        post :create, params: bad_podcast_hash_4, format: :json
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["error"][0]).to eq "Url has already been taken"
       end
     end
   end
