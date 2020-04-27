@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
-  const [user, setUser] = [{}];
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const id = props.match.params.id;
