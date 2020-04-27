@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
+  const [reviews, setReviews] = useState({
+    rating: "",
+    review: ""
+  });
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -17,7 +21,8 @@ const PodcastShowContainer = (props) => {
       })
       .then((response) => response.json())
       .then((body) => {
-        setPodcast(body);
+        setPodcast(body["podcast"]);
+        setReviews(body["reviews"])
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
