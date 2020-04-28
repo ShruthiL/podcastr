@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Podcastr</title>
+  <title>ρodcastr</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-  
-  <nav class="top-bar">
-    <h1><a href="/">Podcastr</a></h1>
-
-    <section class="top-bar-section">
-      <ul class="right">
-        <%- if current_user -%>
-          <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
-        <%- else -%>
-          <li><%= link_to 'Sign Up', new_user_registration_path %></li>
-          <li><%= link_to 'Sign In', new_user_session_path %></li>
-        <%- end -%>
-      </ul>
-    </section>
-  </nav>
-
-  <%- flash.each do |key, value| -%>
-    <div class="flash flash-<%= key %>">
-      <%= value %>
+  <div class="top-bar-container sticky-container" data-sticky-container>
+    <div class="sticky is-stuck is-at-top" data-sticky data-options="marginTop:0;">
+      <nav class="top-bar">
+        <h1><a href="/">ρodcastr</a></h1>
+        <section class="top-bar-section">
+          <div class="right">
+            <%- if current_user -%>
+              <p ><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></p>
+            <%- else -%>
+              <p ><%= link_to 'Sign Up', new_user_registration_path %></p>
+              <p ><%= link_to 'Sign In', new_user_session_path %></p>
+            <%- end -%>
+          </div>
+        </section>
+      </nav>
     </div>
-  <%- end -%>
-
-  <%= yield %>
-
-  <%= javascript_include_tag 'application' %>
-  
-  <%- if Rails.env.development? || Rails.env.test? -%> 
-    <%= javascript_tag do %>
-      window.railsEnv = '<%= Rails.env %>'
+  </div>
+  <div class="content grid-container">
+    <%- flash.each do |key, value| -%>
+      <div class="flash flash-<%= key %>">
+        <%= value %>
+      </div>
     <%- end -%>
-  <%- end -%>
-  <%= javascript_pack_tag 'application' %>
-  
-  <%= yield :extra_footer %>
+
+    <%= yield %>
+
+    <%= javascript_include_tag 'application' %>
+
+    <%- if Rails.env.development? || Rails.env.test? -%>
+      <%= javascript_tag do %>
+        window.railsEnv = '<%= Rails.env %>'
+      <%- end -%>
+    <%- end -%>
+    <%= javascript_pack_tag 'application' %>
+
+    <%= yield :extra_footer %>
+  </div>
 </body>
 </html>
