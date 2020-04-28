@@ -68,8 +68,6 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
   describe "POST#new" do
     let!(:new_podcast_hash) { { podcast: { name: "Reply All", url: "https://gimletmedia.com/shows/reply-all" } } }
     let!(:user) { User.create!(email: "test@email.com", password: "testing", user_name: "test_user") }
-    # user = User.create(email: "test@email.com", password: "testing", user_name: "test_user")
-    # new_user = User.create(email: "test@email.com", password: "testing", user_name: "test_user")
 
     it "fails to create a new Podcast record for an unauthenticated user" do
       previous_count = Podcast.count
@@ -79,20 +77,14 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       expect(new_count).to eq(previous_count)
     end
 
-    it "creates a new Podcast record for an authenticated user" do
+    it "creates a new Podcast record for an authenticated user and returns the new Podcast as json" do
       sign_in user
       previous_count = Podcast.count
       post :create, params: new_podcast_hash, format: :json
-      new_count = Podcast.count
-      expect(new_count).to eq(previous_count + 1)
-    end
-
-    it "returns the new Podcast as json" do
-      sign_in user
-      post :create, params: new_podcast_hash, format: :json
-
       response_body = JSON.parse(response.body)
+      new_count = Podcast.count
 
+      expect(new_count).to eq(previous_count + 1)
       expect(response_body["podcast"].length).to eq 5
       expect(response_body["podcast"]["name"]).to eq "Reply All"
       expect(response_body["podcast"]["url"]).to eq "https://gimletmedia.com/shows/reply-all"
