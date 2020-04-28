@@ -51,32 +51,44 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       expect(response.content_type).to eq 'application/json'
     end
 
-    it "returns the specified podcast name and podcast url" do
+    it "returns information on the user and the specified podcast" do
       get :show, params: {id: podcast1.id}
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 5
+      expect(response_body.length).to eq 2
 
-      expect(response_body["name"]).to eq podcast1.name
-      expect(response_body["url"]).to eq podcast1.url
+      expect(response_body[1]["name"]).to eq podcast1.name
+      expect(response_body[1]["url"]).to eq podcast1.url
 
-      expect(response_body["name"]).to_not eq podcast2.name
-      expect(response_body["url"]).to_not eq podcast2.url
+      expect(response_body[1]["name"]).to_not eq podcast2.name
+      expect(response_body[1]["url"]).to_not eq podcast2.url
     end
   end
 
   describe "POST#new" do
     let!(:new_podcast_hash) { { podcast: { name: "Reply All", url: "https://gimletmedia.com/shows/reply-all" } } }
+    let!(:user) { User.create!(email: "test@email.com", password: "testing", user_name: "test_user") }
+    # user = User.create(email: "test@email.com", password: "testing", user_name: "test_user")
+    # new_user = User.create(email: "test@email.com", password: "testing", user_name: "test_user")
 
-    it "creates a new Podcast record" do
+    it "fails to create a new Podcast record for an unauthenticated user" do
       previous_count = Podcast.count
       post :create, params: new_podcast_hash, format: :json
       new_count = Podcast.count
 
+      expect(new_count).to eq(previous_count)
+    end
+
+    it "creates a new Podcast record for an authenticated user" do
+      sign_in user
+      previous_count = Podcast.count
+      post :create, params: new_podcast_hash, format: :json
+      new_count = Podcast.count
       expect(new_count).to eq(previous_count + 1)
     end
 
     it "returns the new Podcast as json" do
+      sign_in user
       post :create, params: new_podcast_hash, format: :json
 
       response_body = JSON.parse(response.body)
@@ -94,6 +106,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       let!(:bad_podcast_hash_5) { { podcast: { name: "", url: "" } } }
 
       it "does not create a new podcast and return error if podcast name is not provided" do
+        sign_in user
         previous_count = Podcast.count
         post :create, params: bad_podcast_hash_1, format: :json
         new_count = Podcast.count
@@ -104,6 +117,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       end
 
       it "does not create a new podcast and return error if podcast url is not provided" do
+        sign_in user
         previous_count = Podcast.count
         post :create, params: bad_podcast_hash_2, format: :json
         new_count = Podcast.count
@@ -114,6 +128,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       end
 
       it "returns an error if name and url are blank" do
+        sign_in user
         post :create, params: bad_podcast_hash_5, format: :json
         response_body = JSON.parse(response.body)
 
@@ -122,6 +137,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       end
 
       it "returns an error if url does not include http protocol" do
+        sign_in user
         post :create, params: bad_podcast_hash_3, format: :json
         response_body = JSON.parse(response.body)
 
@@ -129,6 +145,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       end
 
       it "returns an error if url is not unique" do
+        sign_in user
         post :create, params: bad_podcast_hash_4, format: :json
         post :create, params: bad_podcast_hash_4, format: :json
         response_body = JSON.parse(response.body)
