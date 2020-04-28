@@ -3,6 +3,11 @@ import PodcastTile from "../components/PodcastTile";
 
 const PodcastsIndexContainer = (props) => {
   const [podcasts, setPodcasts] = useState([]);
+  const [user, setUser] = useState({user: {
+    user_id: null,
+    user_name: null,
+    admin: null
+  }})
 
   useEffect(() => {
     fetch("/api/v1/podcasts")
@@ -17,7 +22,8 @@ const PodcastsIndexContainer = (props) => {
       })
       .then((response) => response.json())
       .then((body) => {
-        setPodcasts(body);
+        setPodcasts(body.podcast);
+        setUser(body.user)
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
@@ -27,9 +33,10 @@ const PodcastsIndexContainer = (props) => {
     podcastTiles = <div><p>No podcasts yet</p></div>
   } else {
     podcastTiles = podcasts.map((podcast) => {
-      return <PodcastTile key={podcast.id} podcast={podcast} />;
+      return <PodcastTile key={podcast.id} podcast={podcast} user={user.user} />;
     });
   }
+
   return(
     <div>
       {podcastTiles}

@@ -2,7 +2,11 @@ class Api::V1::PodcastsController < ApplicationController
     protect_from_forgery unless: -> { request.format.json? }
 
     def index
-        render json: Podcast.all
+        podcast = Podcast.all
+        render json: {
+            podcast: podcast,
+            user: serialized_data(current_user, UserSerializer)
+        }
     end
 
     def create
@@ -22,5 +26,9 @@ class Api::V1::PodcastsController < ApplicationController
 
     def podcast_params
         params.require(:podcast).permit(:name, :url)
+    end
+
+    def serialized_data(data, serializer)
+        ActiveModelSerializers::SerializableResource.new(data, each_serializer: serializer)
     end
 end
