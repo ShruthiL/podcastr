@@ -44,6 +44,28 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
         url: "www.podcast2.com")
     }
 
+    let!(:user1) {User.create(
+        first_name: "John",
+        last_name:"Smith",
+        email: "test@gmail.com",
+        password: "password",
+        user_name: "testuser")
+    }
+
+    let!(:review1) { Review.create(
+        rating: 5,
+        review: "so good!",
+        podcast: podcast1,
+        user: user1)
+    }
+
+    let!(:review2) { Review.create(
+        rating: 4,
+        review: "so bad!",
+        podcast: podcast2,
+        user: user1)
+    }
+
     it "returns a successful response status and a content type of json" do
         get :show, params: {id: podcast1.id}
 
@@ -54,14 +76,18 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
     it "returns the specified podcast name and podcast url" do
         get :show, params: {id: podcast1.id}
         response_body = JSON.parse(response.body)
+        
+        expect(response_body.length).to eq 1
 
-        expect(response_body.length).to eq 5
+        expect(response_body["podcast"]["name"]).to eq podcast1.name
+        expect(response_body["podcast"]["url"]).to eq podcast1.url
+        expect(response_body["podcast"]["reviews"][0]["review"]).to eq review1.review
+        expect(response_body["podcast"]["reviews"][0]["rating"]).to eq review1.rating
 
-        expect(response_body["name"]).to eq podcast1.name
-        expect(response_body["url"]).to eq podcast1.url
-
-        expect(response_body["name"]).to_not eq podcast2.name
-        expect(response_body["url"]).to_not eq podcast2.url
+        expect(response_body["podcast"]["name"]).to_not eq podcast2.name
+        expect(response_body["podcast"]["url"]).to_not eq podcast2.url
+        expect(response_body["podcast"]["reviews"][0]["review"]).to_not eq review2.review
+        expect(response_body["podcast"]["reviews"][0]["rating"]).to_not eq review2.rating 
     end
   end
 end
