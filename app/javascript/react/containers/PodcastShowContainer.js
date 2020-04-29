@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import ReviewTile from "../components/ReviewTile";
 
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -18,9 +20,19 @@ const PodcastShowContainer = (props) => {
       .then((response) => response.json())
       .then((body) => {
         setPodcast(body);
+        setReviews(body.reviews);
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
+
+  let reviewTiles;
+  if (reviews.length === 0) {
+    reviewTiles = <div><p> No reviews yet</p></div>
+  } else {
+    reviewTiles = reviews.map((review) => {
+      return <ReviewTile key={review.id} review = {review} />
+    });
+  }
 
   return (
     <div>
@@ -28,6 +40,10 @@ const PodcastShowContainer = (props) => {
       <a href={podcast.url} target="_blank">
         {podcast.url}
       </a>
+      <div>
+        <h6>Reviews:</h6>
+        {reviewTiles}
+      </div>
     </div>
   );
 };
