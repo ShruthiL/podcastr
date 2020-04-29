@@ -5,7 +5,7 @@ const PodcastTile = (props) => {
   let deleteButton = <></>;
 
   if (props.user.admin) {
-    deleteButton = <input type="button" value="Delete"></input>
+    deleteButton = <input id={`${props.podcast.id}`} type="button" value="Delete" onClick={props.deleteClick}></input>
   }
 
   return (

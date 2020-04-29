@@ -20,7 +20,7 @@ const PodcastShowContainer = (props) => {
       .then((response) => response.json())
       .then((body) => {
         setPodcast(body);
-        setReviews(body.reviews);
+        setReviews(body.podcast.reviews);
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
@@ -30,7 +30,7 @@ const PodcastShowContainer = (props) => {
     reviewTiles = <div><p> No reviews yet</p></div>
   } else {
     reviewTiles = reviews.map((review) => {
-      return <ReviewTile key={review.id} review = {review} />
+      return <ReviewTile key={review.id} review={review} />
     });
   }
 

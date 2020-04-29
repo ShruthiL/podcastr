@@ -6,7 +6,7 @@ class Api::V1::PodcastsController < ApplicationController
         if current_user
             user = ActiveModelSerializers::SerializableResource.new(current_user, each_serializer: UserSerializer)
         else
-            user = {id: "", user_name: "", admin: false}
+            user = {user: {id: "", user_name: "", admin: false} }
         end
         render json: {
             podcast: podcast,
@@ -26,6 +26,12 @@ class Api::V1::PodcastsController < ApplicationController
     def show
         podcast = Podcast.find(params[:id])
         render json: podcast
+    end
+
+    def destroy
+        podcast = Podcast.find(params[:id])
+        podcast.destroy
+        render json: {}, status: :no_content
     end
 
     private
