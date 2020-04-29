@@ -24,7 +24,8 @@ class Api::V1::PodcastsController < ApplicationController
     end
 
     def show
-        render json: Podcast.find(params[:id])
+        podcast = Podcast.find(params[:id])
+        render json: podcast
     end
 
     private

@@ -44,6 +44,28 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       url: "http://www.podcast2.com")
     }
 
+    let!(:user1) {User.create(
+        first_name: "John",
+        last_name:"Smith",
+        email: "test@gmail.com",
+        password: "password",
+        user_name: "testuser")
+    }
+
+    let!(:review1) { Review.create(
+        rating: 5,
+        review: "so good!",
+        podcast: podcast1,
+        user: user1)
+    }
+
+    let!(:review2) { Review.create(
+        rating: 4,
+        review: "so bad!",
+        podcast: podcast2,
+        user: user1)
+    }
+
     it "returns a successful response status and a content type of json" do
       get :show, params: {id: podcast1.id}
 
@@ -55,13 +77,17 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       get :show, params: {id: podcast1.id}
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 5
+      expect(response_body.length).to eq 4
 
       expect(response_body["name"]).to eq podcast1.name
       expect(response_body["url"]).to eq podcast1.url
+      expect(response_body["reviews"][0]["review"]).to eq review1.review
+      expect(response_body["reviews"][0]["rating"]).to eq review1.rating
 
       expect(response_body["name"]).to_not eq podcast2.name
       expect(response_body["url"]).to_not eq podcast2.url
+      expect(response_body["reviews"][0]["review"]).to_not eq review2.review
+      expect(response_body["reviews"][0]["rating"]).to_not eq review2.rating
     end
   end
 
@@ -98,7 +124,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
         post :create, params: bad_podcast_hash_1, format: :json
         new_count = Podcast.count
         response_body = JSON.parse(response.body)
-        
+
         expect(new_count).to eq previous_count
         expect(response_body["error"][0]).to eq "Name can't be blank"
       end
