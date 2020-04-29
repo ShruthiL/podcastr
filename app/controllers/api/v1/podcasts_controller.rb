@@ -16,9 +16,7 @@ class Api::V1::PodcastsController < ApplicationController
 
     def show
         podcast = Podcast.find(params[:id])
-        render json: {
-            podcast: ActiveModelSerializers::SerializableResource.new(podcast, each_serializer: PodcastSerializer)
-        }
+        render json: podcast
     end
 
     private
