@@ -22,12 +22,12 @@ const PodcastReviewFormContainer = (props) => {
 
   const validForSubmission = () => {
     let submitErrors = {};
-      if (reviewRecord["rating"].trim() === "") {
-        submitErrors = {
-          ...submitErrors,
-          ["rating"]: "Rating is blank. Please submit a rating."
-        };
-      }
+    if (reviewRecord["rating"].trim() === "") {
+      submitErrors = {
+        ...submitErrors,
+        ["rating"]: "Rating is blank. Please submit a rating."
+      };
+    }
 
     setErrors(submitErrors);
     return _.isEmpty(submitErrors);
@@ -68,7 +68,7 @@ const PodcastReviewFormContainer = (props) => {
     // }
   };
 
-//  re-render on submit if form is submitted successfully.
+  //  re-render on submit if form is submitted successfully.
 
   return (
     <div>
@@ -76,12 +76,14 @@ const PodcastReviewFormContainer = (props) => {
       <form className="new-review" onSubmit={onSubmit}>
         <label>
           Rating:
-          <input
-            type="text"
-            id="rating"
-            onChange={handleChange}
-            value={reviewRecord.rating}
-          />
+          <select id="rating" value={reviewRecord.rating} onChange={handleChange}>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
         </label>
 
         <label>
