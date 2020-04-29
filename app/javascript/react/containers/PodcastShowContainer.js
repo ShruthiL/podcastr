@@ -35,6 +35,12 @@ const PodcastShowContainer = (props) => {
     });
   }
 
+  const rerender = (review) => {
+    setReviews (
+      [...reviews, review] 
+    )
+  }
+
   return (
     <div>
       <p>{podcast.name}</p>
@@ -42,7 +48,9 @@ const PodcastShowContainer = (props) => {
         {podcast.url}
       </a>
       <div>
-        <PodcastReviewFormContainer />
+        <PodcastReviewFormContainer 
+          id={props.match.params.id}
+          rerender={rerender} />
         <h6>Reviews:</h6>
         {reviewTiles}
       </div>

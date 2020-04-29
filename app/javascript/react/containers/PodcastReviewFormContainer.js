@@ -5,12 +5,10 @@ import _ from "lodash";
 import ErrorList from "../components/ErrorList.js";
 
 const PodcastReviewFormContainer = (props) => {
-  const fields = ["rating", "review"];
   const [reviewRecord, setReviewRecord] = useState({
     rating: "",
-    review: "",
-  });
-  const [newRecord, setNewRecord] = useState({});
+    review: ""
+   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
@@ -25,7 +23,7 @@ const PodcastReviewFormContainer = (props) => {
     if (reviewRecord["rating"].trim() === "") {
       submitErrors = {
         ...submitErrors,
-        ["rating"]: "Rating is blank. Please submit a rating."
+        ["rating"]: "Please select a rating"
       };
     }
 
@@ -34,41 +32,46 @@ const PodcastReviewFormContainer = (props) => {
   };
 
   const onSubmit = (event) => {
-    // event.preventDefault();
-    // if (validForSubmission()) {
-    //   let formPayload = {
-    //     review: reviewRecord,
-    //   };
-    //   fetch("/api/v1/podcasts", {
-    //     credentials: "same-origin",
-    //     method: "POST",
-    //     body: JSON.stringify(formPayload),
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //     .then((response) => {
-    //       if (response.ok) {
-    //         return response;
-    //       } else {
-    //         response.json().then((body) => setErrors(body.error));
-    //         let errorMessage = `${response.status} (${response.statusText})`;
-    //         let error = new Error(errorMessage);
-    //         throw error;
-    //       }
-    //     })
-    //     .then((response) => response.json())
-    //     .then((body) => {
-    //       let newPodcast = body.podcast;
-    //       setNewRecord(newPodcast);
-    //       setShouldRedirect(true);
-    //     })
-    //     .catch((error) => console.error(`Error in fetch: ${error.message}`));
-    // }
+    event.preventDefault();
+    if (validForSubmission()) {
+      let formPayload = {
+        review: {
+          review: reviewRecord.review,
+          rating: reviewRecord.rating,
+          user_id: 1,
+          podcast_id: props.id
+        }
+      };
+      fetch(`/api/v1/podcasts/${props.id}/reviews`, {
+        credentials: "same-origin",
+        method: "POST",
+        body: JSON.stringify(formPayload),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            response.json().then((body) => setErrors(body.error));
+            let errorMessage = `${response.status} (${response.statusText})`;
+            let error = new Error(errorMessage);
+            throw error;
+          }
+        })
+        .then((response) => response.json())
+        .then((body) => {
+          props.rerender(body.review)
+          setReviewRecord({
+            rating: "",
+            review: ""
+           })
+        })
+        .catch((error) => console.error(`Error in fetch: ${error.message}`));
+    }
   };
-
-  //  re-render on submit if form is submitted successfully.
 
   return (
     <div>
@@ -77,6 +80,7 @@ const PodcastReviewFormContainer = (props) => {
         <label>
           Rating:
           <select id="rating" value={reviewRecord.rating} onChange={handleChange}>
+            <option value=""></option>
             <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
