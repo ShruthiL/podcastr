@@ -33,7 +33,7 @@ const PodcastsIndexContainer = (props) => {
     podcastTiles = <div><p>No podcasts yet</p></div>
   } else {
     podcastTiles = podcasts.map((podcast) => {
-      return <PodcastTile key={podcast.id} podcast={podcast} user={user.user} />;
+      return <PodcastTile key={podcast.id} podcast={podcast} user={user} />;
     });
   }
 

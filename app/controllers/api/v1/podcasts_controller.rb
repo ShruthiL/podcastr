@@ -3,9 +3,14 @@ class Api::V1::PodcastsController < ApplicationController
 
     def index
         podcast = Podcast.all
+        if current_user
+            user = ActiveModelSerializers::SerializableResource.new(current_user, each_serializer: UserSerializer)
+        else
+            user = {id: "", user_name: "", admin: false}
+        end
         render json: {
             podcast: podcast,
-            user: serialized_data(current_user, UserSerializer)
+            user: user
         }
     end
 
