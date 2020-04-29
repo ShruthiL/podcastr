@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReviewTile from "../components/ReviewTile";
+import PodcastReviewFormContainer from "./PodcastReviewFormContainer"
 
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
@@ -41,6 +42,7 @@ const PodcastShowContainer = (props) => {
         {podcast.url}
       </a>
       <div>
+        <PodcastReviewFormContainer />
         <h6>Reviews:</h6>
         {reviewTiles}
       </div>
