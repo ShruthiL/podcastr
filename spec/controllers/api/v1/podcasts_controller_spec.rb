@@ -25,11 +25,11 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
 
       expect(response_body.length).to eq 2
 
-      expect(response_body[0]["name"]).to eq podcast1.name
-      expect(response_body[0]["url"]).to eq podcast1.url
+      expect(response_body["podcast"][0]["name"]).to eq podcast1.name
+      expect(response_body["podcast"][0]["url"]).to eq podcast1.url
 
-      expect(response_body[1]["name"]).to eq podcast2.name
-      expect(response_body[1]["url"]).to eq podcast2.url
+      expect(response_body["podcast"][1]["name"]).to eq podcast2.name
+      expect(response_body["podcast"][1]["url"]).to eq podcast2.url
     end
   end
 
@@ -77,17 +77,17 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       get :show, params: {id: podcast1.id}
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 4
+      expect(response_body["podcast"].length).to eq 4
 
-      expect(response_body["name"]).to eq podcast1.name
-      expect(response_body["url"]).to eq podcast1.url
-      expect(response_body["reviews"][0]["review"]).to eq review1.review
-      expect(response_body["reviews"][0]["rating"]).to eq review1.rating
+      expect(response_body["podcast"]["name"]).to eq podcast1.name
+      expect(response_body["podcast"]["url"]).to eq podcast1.url
+      expect(response_body["podcast"]["reviews"][0]["review"]).to eq review1.review
+      expect(response_body["podcast"]["reviews"][0]["rating"]).to eq review1.rating
 
-      expect(response_body["name"]).to_not eq podcast2.name
-      expect(response_body["url"]).to_not eq podcast2.url
-      expect(response_body["reviews"][0]["review"]).to_not eq review2.review
-      expect(response_body["reviews"][0]["rating"]).to_not eq review2.rating
+      expect(response_body["podcast"]["name"]).to_not eq podcast2.name
+      expect(response_body["podcast"]["url"]).to_not eq podcast2.url
+      expect(response_body["podcast"]["reviews"][0]["review"]).to_not eq review2.review
+      expect(response_body["podcast"]["reviews"][0]["rating"]).to_not eq review2.rating
     end
   end
 
@@ -161,6 +161,26 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
 
         expect(response_body["error"][0]).to eq "Url has already been taken"
       end
+    end
+  end
+
+  describe '#destroy' do
+    let! (:podcast) { Podcast.create(name: "Reply All", url: "http://www.gimletsomething.com") }
+    let! (:user) { User.create(
+      first_name: "John",
+      last_name:"Smith",
+      email: "test@gmail.com",
+      password: "password",
+      user_name: "testuser",
+      admin: true
+    ) }
+
+    it 'removes podcast from table' do
+      sign_in user
+      count = Podcast.count
+      delete :destroy, params: { id: podcast.id }
+
+      expect(Podcast.count).to eq(count - 1)
     end
   end
 end
