@@ -5,6 +5,7 @@ import PodcastReviewFormContainer from "./PodcastReviewFormContainer"
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
   const [reviews, setReviews] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -20,8 +21,9 @@ const PodcastShowContainer = (props) => {
       })
       .then((response) => response.json())
       .then((body) => {
-        setPodcast(body);
-        setReviews(body.reviews);
+        setPodcast(body.podcast.podcast);
+        setReviews(body.podcast.podcast.reviews);
+        setUser(body.user.user)
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
@@ -31,8 +33,18 @@ const PodcastShowContainer = (props) => {
     reviewTiles = <div><p> No reviews yet</p></div>
   } else {
     reviewTiles = reviews.map((review) => {
-      return <ReviewTile key={review.id} review = {review} />
+      return <ReviewTile key={review.id} review={review} />
     });
+  }
+
+  let reviewForm;
+  if (user.user_name === "") {
+    reviewForm = <></>
+  } else {
+    reviewForm = <PodcastReviewFormContainer
+      id={props.match.params.id}
+      rerender={rerender}
+      user={user} />
   }
 
   const rerender = (review) => {
@@ -48,10 +60,7 @@ const PodcastShowContainer = (props) => {
         {podcast.url}
       </a>
       <div>
-        <PodcastReviewFormContainer 
-          id={props.match.params.id}
-          rerender={rerender} 
-          user={}/>
+        {reviewForm}
         <h6>Reviews:</h6>
         {reviewTiles}
       </div>
