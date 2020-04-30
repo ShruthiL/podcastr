@@ -44,7 +44,16 @@ const PodcastShowContainer = (props) => {
   }
 
   let reviewForm;
-  if (user.userName === "") {
+  // if (user) {
+  //   reviewForm = <PodcastReviewFormContainer
+  //     id={props.match.params.id}
+  //     rerender={rerender}
+  //     user={user} />
+  // } else {
+  //   reviewForm = <></>
+  // }
+
+  if (user.userName === null) {
     reviewForm = <></>
   } else {
     reviewForm = <PodcastReviewFormContainer
@@ -55,12 +64,17 @@ const PodcastShowContainer = (props) => {
 
   return (
     <div>
-      <p>{podcast.name}</p>
-      <a href={podcast.url} target="_blank">
-        {podcast.url}
-      </a>
       <div>
+        <p>{podcast.name}</p>
+        <a href={podcast.url} target="_blank">
+          {podcast.url}
+        </a>
+      </div>
+      <div>
+        <h6>Add a Review:</h6>
         {reviewForm}
+      </div>
+      <div>
         <h6>Reviews:</h6>
         {reviewTiles}
       </div>
