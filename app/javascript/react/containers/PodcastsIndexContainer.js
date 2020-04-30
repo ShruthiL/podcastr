@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PodcastTile from "../components/PodcastTile";
 
 const PodcastsIndexContainer = (props) => {
@@ -24,14 +25,19 @@ const PodcastsIndexContainer = (props) => {
 
   let podcastTiles;
   if (podcasts.length === 0) {
-    podcastTiles = <div><p>No podcasts yet</p></div>
+    podcastTiles = (
+      <div>
+        <p>No podcasts yet</p>
+      </div>
+    );
   } else {
     podcastTiles = podcasts.map((podcast) => {
       return <PodcastTile key={podcast.id} podcast={podcast} />;
     });
   }
-  return(
+  return (
     <div>
+      <Link to="/podcasts/new">Add a New Podcast</Link>
       {podcastTiles}
     </div>
   );
