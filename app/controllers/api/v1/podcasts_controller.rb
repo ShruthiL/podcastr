@@ -39,8 +39,4 @@ class Api::V1::PodcastsController < ApplicationController
     def podcast_params
         params.require(:podcast).permit(:name, :url)
     end
-
-    def serialized_data(data, serializer)
-        ActiveModelSerializers::SerializableResource.new(data, each_serializer: serializer)
-    end
 end
