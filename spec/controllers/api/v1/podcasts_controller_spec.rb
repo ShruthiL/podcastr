@@ -23,13 +23,13 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       get :index
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 2
+      expect(response_body["podcasts"].length).to eq 2
 
-      expect(response_body[0]["name"]).to eq podcast1.name
-      expect(response_body[0]["url"]).to eq podcast1.url
+      expect(response_body["podcasts"][0]["name"]).to eq podcast1.name
+      expect(response_body["podcasts"][0]["url"]).to eq podcast1.url
 
-      expect(response_body[1]["name"]).to eq podcast2.name
-      expect(response_body[1]["url"]).to eq podcast2.url
+      expect(response_body["podcasts"][1]["name"]).to eq podcast2.name
+      expect(response_body["podcasts"][1]["url"]).to eq podcast2.url
     end
   end
 
