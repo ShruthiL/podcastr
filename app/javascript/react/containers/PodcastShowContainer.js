@@ -37,6 +37,12 @@ const PodcastShowContainer = (props) => {
     });
   }
 
+  const rerender = (review) => {
+    setReviews(
+      [...reviews, review]
+    )
+  }
+
   let reviewForm;
   if (user.user_name === "") {
     reviewForm = <></>
@@ -45,12 +51,6 @@ const PodcastShowContainer = (props) => {
       id={props.match.params.id}
       rerender={rerender}
       user={user} />
-  }
-
-  const rerender = (review) => {
-    setReviews (
-      [...reviews, review] 
-    )
   }
 
   return (

@@ -77,7 +77,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       get :show, params: {id: podcast1.id}
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 4
+      expect(response_body.length).to eq 2
 
       expect(response_body["name"]).to eq podcast1.name
       expect(response_body["url"]).to eq podcast1.url

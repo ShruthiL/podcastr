@@ -15,16 +15,17 @@ class Api::V1::PodcastsController < ApplicationController
     end
 
     def show
-        podcast = Podcast.find(params[:id])
-        if current_user
-            user = serialized_data(current_user, UserSerializer)
-        else
-            user = {user: {id: "", user_name: "", admin: false} }
-        end
-        render json: {
-            podcast: serialized_data(podcast, PodcastSerializer),
-            user: user
-        }
+        # podcast = Podcast.find(params[:id])
+        # if current_user
+        #     user = serialized_data(current_user, UserSerializer)
+        # else
+        #     user = {user: {id: "", user_name: "", admin: false} }
+        # end
+        # render json: {
+        #     podcast: serialized_data(podcast, PodcastSerializer),
+        #     user: user
+        # }
+        render json: Podcast.find(params[:id])
     end
 
     private

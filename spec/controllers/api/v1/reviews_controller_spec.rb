@@ -13,11 +13,11 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
       user_name: "user1",
       password: "password")
     }
-
+    
+    let!(:new_review_hash) { { review: { rating: 5, review: "Great podcast!", user: user1, podcast: podcast1 } } }
+    
     it "creates a new review record" do
-
-      let!(:new_review_hash) { { review: { rating: 5, review: "Great podcast!", user: user1, podcast: podcast1 } } }
-
+      params = {"podcast_id"=>"1"}
       previous_count = Review.count
       post :create, params: new_review_hash, format: :json
       new_count = Review.count
@@ -34,7 +34,7 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
       expect(response_body["review"]["rating"]).to eq 5
       expect(response_body["review"]["review"]).to eq "Great podcast!"
     end
-
+            
     # context "when a malformed request is made" do
     #   let!(:bad_review_hash_1) { { review: { url: "https://gimletmedia.com/shows/reply-all" } } }
     #   let!(:bad_review_hash_2) { { review: { name: "Reply All" } } }
