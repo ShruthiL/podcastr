@@ -14,19 +14,14 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
       password: "password")
     }
 
-    it "creates a new review record" do
-      sign_in user1
-      
-      new_review_hash = {
-        podcast_id: podcast1.id,
-        review: {
-          rating: 5,
-          review: "Great podcast!",
-          user_id: user1.id, 
-          podcast_id: podcast1.id
-        }
-      }
+    let!(:new_review_hash) { { podcast_id: podcast1.id, review: {
+      rating: 5,
+      review: "Great podcast!",
+      user_id: user1.id, 
+      podcast_id: podcast1.id
+    } } }
 
+    it "creates a new review record" do
       previous_count = Review.count
       post :create, params: new_review_hash, format: :json
       new_count = Review.count
@@ -35,18 +30,7 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
     end
 
     it "returns the new review as json" do
-      new_review_hash = {
-        podcast_id: podcast1.id,
-        review: {
-          rating: 5,
-          review: "Great podcast!",
-          user_id: user1.id, 
-          podcast_id: podcast1.id
-        }
-      }
-
       post :create, params: new_review_hash, format: :json
-
       response_body = JSON.parse(response.body)
 
       expect(response_body["review"].length).to eq 7
