@@ -44,6 +44,18 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       url: "http://www.podcast2.com")
     }
 
+    let!(:user3) { User.create!(
+      email: "test3@email.com",
+      password: "testing3", 
+      user_name: "test_user3") 
+    }
+
+    let!(:user4) { User.create!(
+      email: "test4@email.com",
+      password: "testing4", 
+      user_name: "test_user4") 
+    }
+
     it "returns a successful response status and a content type of json" do
       get :show, params: {id: podcast1.id}
 
@@ -51,17 +63,36 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       expect(response.content_type).to eq 'application/json'
     end
 
-    it "returns information on the user and the specified podcast" do
+    it "if the user is logged in returns information on the user and the specified podcast" do
+      sign_in user3
       get :show, params: {id: podcast1.id}
       response_body = JSON.parse(response.body)
 
       expect(response_body.length).to eq 2
 
-      expect(response_body[1]["name"]).to eq podcast1.name
-      expect(response_body[1]["url"]).to eq podcast1.url
+      expect(response_body["podcast"]["name"]).to eq podcast1.name
+      expect(response_body["podcast"]["url"]).to eq podcast1.url
+      expect(response_body["user"]["user_name"]).to eq "test_user3"
+      expect(response_body["user"]["admin"]).to eq false
 
-      expect(response_body[1]["name"]).to_not eq podcast2.name
-      expect(response_body[1]["url"]).to_not eq podcast2.url
+      expect(response_body["podcast"]["name"]).to_not eq podcast2.name
+      expect(response_body["podcast"]["url"]).to_not eq podcast2.url
+      expect(response_body["user"]["user_name"]).to_not eq "test_user4"
+    end
+
+    it "if the user is not logged in returns information of the specified podcast and not user" do
+      get :show, params: {id: podcast1.id}
+      response_body = JSON.parse(response.body)
+
+      expect(response_body.length).to eq 2
+
+      expect(response_body["podcast"]["name"]).to eq podcast1.name
+      expect(response_body["podcast"]["url"]).to eq podcast1.url
+      expect(response_body["user"]["user"]["user_name"]).to eq ""
+      expect(response_body["user"]["user"]["admin"]).to eq false
+
+      expect(response_body["podcast"]["name"]).to_not eq podcast2.name
+      expect(response_body["podcast"]["url"]).to_not eq podcast2.url
     end
   end
 
