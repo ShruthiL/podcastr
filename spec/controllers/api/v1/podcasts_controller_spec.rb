@@ -165,33 +165,22 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
   end
 
   describe '#destroy' do
-    context 'existing post' do
-      let! (:podcast) { Podcast.create(name: "Reply All", url: "http://www.gimletsomething.com") }
+    let! (:podcast) { Podcast.create(name: "Reply All", url: "http://www.gimletsomething.com") }
+    let! (:user) { User.create(
+      first_name: "John",
+      last_name:"Smith",
+      email: "test@gmail.com",
+      password: "password",
+      user_name: "testuser",
+      admin: true
+    ) }
 
-      it 'removes podcast from table' do
-        # count = Podcast.count
-        @podcast = Podcast.create(name: "Reply All", url: "http://www.gimletsomething2.com")
-        # delete :destroy, id: @podcast
+    it 'removes podcast from table' do
+      sign_in user
+      count = Podcast.count
+      delete :destroy, params: { id: podcast.id }
 
-        # expect(Podcast.count).to eq(count - 1)
-        binding.pry
-
-        expect{
-          delete :destroy, id: @podcast        
-        }.to change(Podcast,:count).by(-1)
-      end
-
-      # it 'renders index template' do
-      #   delete :destroy, id: podcast
-      #   expect(response).to render_template('index')
-      # end
+      expect(Podcast.count).to eq(count - 1)
     end
-
-    # context 'delete a non-existent post' do
-    #   it 'creates an error message' do
-    #     delete :destroy, id: 10000
-    #     expect(flash[:errors]).to include("Post doesn't exist")
-    #   end
-    # end
   end
 end
