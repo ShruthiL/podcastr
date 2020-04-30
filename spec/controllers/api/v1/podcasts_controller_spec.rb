@@ -77,17 +77,17 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       get :show, params: {id: podcast1.id}
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 2
+      expect(response_body.length).to eq 1
 
-      expect(response_body["name"]).to eq podcast1.name
-      expect(response_body["url"]).to eq podcast1.url
-      expect(response_body["reviews"][0]["review"]).to eq review1.review
-      expect(response_body["reviews"][0]["rating"]).to eq review1.rating
+      expect(response_body["podcast"]["name"]).to eq podcast1.name
+      expect(response_body["podcast"]["url"]).to eq podcast1.url
+      expect(response_body["podcast"]["reviews"][0]["review"]).to eq review1.review
+      expect(response_body["podcast"]["reviews"][0]["rating"]).to eq review1.rating
 
-      expect(response_body["name"]).to_not eq podcast2.name
-      expect(response_body["url"]).to_not eq podcast2.url
-      expect(response_body["reviews"][0]["review"]).to_not eq review2.review
-      expect(response_body["reviews"][0]["rating"]).to_not eq review2.rating
+      expect(response_body["podcast"]["name"]).to_not eq podcast2.name
+      expect(response_body["podcast"]["url"]).to_not eq podcast2.url
+      expect(response_body["podcast"]["reviews"][0]["review"]).to_not eq review2.review
+      expect(response_body["podcast"]["reviews"][0]["rating"]).to_not eq review2.rating
     end
   end
 

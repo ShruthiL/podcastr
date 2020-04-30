@@ -21,9 +21,9 @@ const PodcastShowContainer = (props) => {
       })
       .then((response) => response.json())
       .then((body) => {
-        setPodcast(body.podcast.podcast);
-        setReviews(body.podcast.podcast.reviews);
-        setUser(body.user.user)
+        setPodcast(body.podcast);
+        setReviews(body.podcast.reviews);
+        setUser(body.podcast.user)
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
@@ -44,7 +44,7 @@ const PodcastShowContainer = (props) => {
   }
 
   let reviewForm;
-  if (user.user_name === "") {
+  if (user.userName === "") {
     reviewForm = <></>
   } else {
     reviewForm = <PodcastReviewFormContainer
