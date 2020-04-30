@@ -50,7 +50,8 @@ const PodcastShowContainer = (props) => {
       <div>
         <PodcastReviewFormContainer 
           id={props.match.params.id}
-          rerender={rerender} />
+          rerender={rerender} 
+          user={}/>
         <h6>Reviews:</h6>
         {reviewTiles}
       </div>

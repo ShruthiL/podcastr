@@ -38,7 +38,7 @@ const PodcastReviewFormContainer = (props) => {
         review: {
           review: reviewRecord.review,
           rating: reviewRecord.rating,
-          user_id: 1,
+          user_id: props.user,
           podcast_id: props.id
         }
       };
