@@ -5,11 +5,9 @@ import PodcastTile from "../components/PodcastTile";
 const PodcastsIndexContainer = (props) => {
   const [podcasts, setPodcasts] = useState([]);
   const [user, setUser] = useState({
-    user: {
-      user_id: null,
-      user_name: null,
-      admin: null,
-    },
+    id: null,
+    userName: null,
+    admin: null,
   });
 
   const fetchPodcasts = () => {
@@ -25,10 +23,8 @@ const PodcastsIndexContainer = (props) => {
       })
       .then((response) => response.json())
       .then((body) => {
-        debugger;
-        ``;
-        setPodcasts(body.podcast);
-        setUser(body.user);
+        setPodcasts(body.podcasts);
+        setUser(body.podcasts[0].user);
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   };
@@ -73,7 +69,7 @@ const PodcastsIndexContainer = (props) => {
         <PodcastTile
           key={podcast.id}
           podcast={podcast}
-          user={user.user}
+          user={user}
           deleteClick={deleteClick}
         />
       );
@@ -81,13 +77,14 @@ const PodcastsIndexContainer = (props) => {
   }
 
   let addPodcast;
-  if (user.user_name) {
+  if (user.userName) {
     addPodcast = (
       <Link className="button" to="/podcasts/new">
         Add a New Podcast
       </Link>
     );
   } else {
+    debugger
     addPodcast = <></>;
   }
 
