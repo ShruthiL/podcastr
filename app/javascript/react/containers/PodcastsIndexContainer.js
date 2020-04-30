@@ -84,7 +84,6 @@ const PodcastsIndexContainer = (props) => {
       </Link>
     );
   } else {
-    debugger
     addPodcast = <></>;
   }
 
