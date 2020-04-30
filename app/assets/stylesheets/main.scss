@@ -1,0 +1,33 @@
+body {
+    background-color: #98C1D9;
+}
+
+.top-bar {
+    background-color: #EE6C4D;
+    color: #E0FBFC;
+    font-weight: bold;
+    border-bottom: 5px solid #293241;
+}
+
+.top-bar-section p {
+    margin: 2px;
+}
+
+.top-bar a {
+    color:#293241;
+    font-weight: bolder;
+}
+
+.top-bar h1 {
+    font-family: 'Play', sans-serif;
+    margin-left: 20px;
+}
+
+.sticky {
+    width: 100%;
+}
+
+.content {
+    margin: 2em;
+    margin-top: 3em;
+}

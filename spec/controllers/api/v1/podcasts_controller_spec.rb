@@ -46,14 +46,28 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
 
     let!(:user3) { User.create!(
       email: "test3@email.com",
-      password: "testing3", 
-      user_name: "test_user3") 
+      password: "testing3",
+      user_name: "test_user3")
     }
 
     let!(:user4) { User.create!(
       email: "test4@email.com",
-      password: "testing4", 
-      user_name: "test_user4") 
+      password: "testing4",
+      user_name: "test_user4")
+    }
+
+    let!(:review1) { Review.create(
+        rating: 5,
+        review: "so good!",
+        podcast: podcast1,
+        user: user3)
+    }
+
+    let!(:review2) { Review.create(
+        rating: 4,
+        review: "so bad!",
+        podcast: podcast2,
+        user: user3)
     }
 
     it "returns a successful response status and a content type of json" do
@@ -74,10 +88,14 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       expect(response_body["podcast"]["url"]).to eq podcast1.url
       expect(response_body["user"]["user_name"]).to eq "test_user3"
       expect(response_body["user"]["admin"]).to eq false
+      expect(response_body["podcast"]["reviews"][0]["review"]).to eq review1.review
+      expect(response_body["podcast"]["reviews"][0]["rating"]).to eq review1.rating
 
       expect(response_body["podcast"]["name"]).to_not eq podcast2.name
       expect(response_body["podcast"]["url"]).to_not eq podcast2.url
       expect(response_body["user"]["user_name"]).to_not eq "test_user4"
+      expect(response_body["podcast"]["reviews"][0]["review"]).to_not eq review2.review
+      expect(response_body["podcast"]["reviews"][0]["rating"]).to_not eq review2.rating
     end
 
     it "if the user is not logged in returns information of the specified podcast and not user" do
@@ -90,9 +108,13 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       expect(response_body["podcast"]["url"]).to eq podcast1.url
       expect(response_body["user"]["user"]["user_name"]).to eq ""
       expect(response_body["user"]["user"]["admin"]).to eq false
+      expect(response_body["podcast"]["reviews"][0]["review"]).to eq review1.review
+      expect(response_body["podcast"]["reviews"][0]["rating"]).to eq review1.rating
 
       expect(response_body["podcast"]["name"]).to_not eq podcast2.name
       expect(response_body["podcast"]["url"]).to_not eq podcast2.url
+      expect(response_body["podcast"]["reviews"][0]["review"]).to_not eq review2.review
+      expect(response_body["podcast"]["reviews"][0]["rating"]).to_not eq review2.rating
     end
   end
 
@@ -134,7 +156,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
         post :create, params: bad_podcast_hash_1, format: :json
         new_count = Podcast.count
         response_body = JSON.parse(response.body)
-        
+
         expect(new_count).to eq previous_count
         expect(response_body["error"][0]).to eq "Name can't be blank"
       end
