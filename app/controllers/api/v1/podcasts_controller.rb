@@ -36,5 +36,5 @@ class Api::V1::PodcastsController < ApplicationController
 
     def serialized_data(data, serializer)
         ActiveModelSerializers::SerializableResource.new(data, each_serializer: serializer)
-      end
+    end
 end
