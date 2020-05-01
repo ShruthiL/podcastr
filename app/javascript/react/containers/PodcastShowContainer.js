@@ -32,7 +32,7 @@ const PodcastShowContainer = (props) => {
     reviewTiles = <div><p> No reviews yet</p></div>
   } else {
     reviewTiles = reviews.map((review) => {
-      return <ReviewTile key={review.id} review = {review} />
+      return <ReviewTile key={review.id} review={review} />
     });
   }
 

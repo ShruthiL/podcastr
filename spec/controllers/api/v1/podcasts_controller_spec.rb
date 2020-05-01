@@ -23,13 +23,12 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       get :index
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 2
+      expect(response_body.length).to eq 1
+      expect(response_body["podcasts"][0]["name"]).to eq podcast1.name
+      expect(response_body["podcasts"][0]["url"]).to eq podcast1.url
 
-      expect(response_body[0]["name"]).to eq podcast1.name
-      expect(response_body[0]["url"]).to eq podcast1.url
-
-      expect(response_body[1]["name"]).to eq podcast2.name
-      expect(response_body[1]["url"]).to eq podcast2.url
+      expect(response_body["podcasts"][1]["name"]).to eq podcast2.name
+      expect(response_body["podcasts"][1]["url"]).to eq podcast2.url
     end
   end
 
@@ -197,6 +196,26 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
 
         expect(response_body["error"][0]).to eq "Url has already been taken"
       end
+    end
+  end
+
+  describe '#destroy' do
+    let! (:podcast) { Podcast.create(name: "Reply All", url: "http://www.gimletsomething.com") }
+    let! (:user) { User.create(
+      first_name: "John",
+      last_name:"Smith",
+      email: "test@gmail.com",
+      password: "password",
+      user_name: "testuser",
+      admin: true
+    ) }
+
+    it 'removes podcast from table' do
+      sign_in user
+      count = Podcast.count
+      delete :destroy, params: { id: podcast.id }
+
+      expect(Podcast.count).to eq(count - 1)
     end
   end
 end

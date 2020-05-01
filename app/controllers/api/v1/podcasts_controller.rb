@@ -16,25 +16,18 @@ class Api::V1::PodcastsController < ApplicationController
     end
 
     def show
+        render json: Podcast.find(params[:id])
+    end
+
+    def destroy
         podcast = Podcast.find(params[:id])
-        if current_user
-            user = serialized_data(current_user, UserSerializer)
-        else
-            user = {user: {id: "", user_name: "", admin: false} }
-        end
-        render json: {
-            podcast: serialized_data(podcast, PodcastSerializer),
-            user: user
-        }
+        podcast.destroy
+        render json: {}, status: :no_content
     end
 
     private
 
     def podcast_params
         params.require(:podcast).permit(:name, :url)
-    end
-
-    def serialized_data(data, serializer)
-        ActiveModelSerializers::SerializableResource.new(data, each_serializer: serializer)
     end
 end
