@@ -26,6 +26,8 @@ gem 'active_model_serializers'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem "active_model_serializers", require: true
+
 group :development, :test do
 
 end

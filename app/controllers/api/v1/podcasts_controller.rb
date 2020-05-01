@@ -1,4 +1,5 @@
 class Api::V1::PodcastsController < ApplicationController
+    before_action :authenticate_user!, except: [:index, :show]
     protect_from_forgery unless: -> { request.format.json? }
 
     def index
@@ -16,6 +17,12 @@ class Api::V1::PodcastsController < ApplicationController
 
     def show
         render json: Podcast.find(params[:id])
+    end
+
+    def destroy
+        podcast = Podcast.find(params[:id])
+        podcast.destroy
+        render json: {}, status: :no_content
     end
 
     private

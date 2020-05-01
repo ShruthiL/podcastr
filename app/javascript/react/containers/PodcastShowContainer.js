@@ -4,6 +4,7 @@ import PodcastReviewFormContainer from "./PodcastReviewFormContainer"
 
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
+  const [user, setUser] = useState({});
   const [reviews, setReviews] = useState([]);
   const [user, setUser] = useState({});
 
