@@ -7,7 +7,7 @@ const PodcastsIndexContainer = (props) => {
   const [user, setUser] = useState({
     id: null,
     userName: null,
-    admin: null,
+    admin: null
   });
 
   const fetchPodcasts = () => {
@@ -88,7 +88,7 @@ const PodcastsIndexContainer = (props) => {
   }
 
   return (
-    <div>
+    <div className="center">
       {addPodcast}
       {podcastTiles}
     </div>
