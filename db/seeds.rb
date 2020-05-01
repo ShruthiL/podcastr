@@ -5,3 +5,25 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+User.create(email: "c.a.ellinger+admin@gmail.com", first_name: "Christie", last_name: "Ellinger", user_name: "cellingeradmin", password: "testtest", admin: true)
+User.create(email: "c.a.ellinger+user@gmail.com", first_name: "Christie", last_name: "Ellinger", user_name: "cellingeruser", password: "testtest", admin: true)
+
+
+Podcast.create(name: "Reply All", url: "https://gimletmedia.com/shows/reply-all")
+Podcast.create(name: "Hardcore History", url: "https://www.dancarlin.com/hardcore-history-series/")
+Podcast.create(name: "Welcome to Night Vale", url: "https://www.welcometonightvale.com/")
+Podcast.create(name: "Darknet Diaries", url: "https://darknetdiaries.com/")
+Podcast.create(name: "Nerdificent", url: "https://www.iheart.com/podcast/105-nerdificent-29083368/")
+Podcast.create(name: "Conan O\'Brien Needs a Friend", url: "https://omny.fm/shows/conan-o-brien-needs-a-friend")
+Podcast.create(name: "The Adventure Zone", url: "https://maximumfun.org/podcasts/adventure-zone/")
+Podcast.create(name: "The Bike Shed", url: "https://www.bikeshed.fm/")
+Podcast.create(name: "Office Ladies", url: "https://officeladies.com/")
+
+
+Review.create(rating: 5, review: "", user: User.first, podcast: Podcast.first)
+Review.create(rating: 3, review: "PJs laugh is ridiculous", user: User.second, podcast: Podcast.first)
+Review.create(rating: 4, review: "Good stuff", user: User.second, podcast: Podcast.second)
+Review.create(rating: 1, review: "This dude sounds like a ginger", user: User.second, podcast: (Podcast.find_by name: "Conan O\'Brien Needs a Friend"))
+Review.create(rating: 4, review: "Creepy but good", user: User.first, podcast: Podcast.third)
