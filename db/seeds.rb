@@ -15,6 +15,8 @@ User.create(email: "wesley.adams.davis+admin@gmail.com", first_name: "Wes", last
 User.create(email: "wesley.adams.davis+user@gmail.com", first_name: "Wes", last_name: "Davis", user_name: "wdavisuser", password: "password", admin: false)
 User.create(email: "Sruthiraj.lagisetty+admin@gmail.com", first_name: "Shruthi", last_name: "Lagisetty", user_name: "slagisettyadmin", password: "password", admin: true)
 User.create(email: "Sruthiraj.lagisetty+user@gmail.com", first_name: "Shruthi", last_name: "Lagisetty", user_name: "slagisettyuser", password: "password", admin: false)
+User.create(email: "Flashnej+admin@gmail.com", first_name: "Jason", last_name: "Flashner", user_name: "jflashneradmin", password: "password", admin: true)
+User.create(email: "Flashnej+user@gmail.com", first_name: "Jason", last_name: "Flashner", user_name: "jflashneruser", password: "password", admin: false)
 
 
 Podcast.create(name: "Reply All", url: "https://gimletmedia.com/shows/reply-all")
