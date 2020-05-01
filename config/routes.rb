@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   get '/podcasts', to: "static_pages#index"
-  get '/podcasts/new', to: "static_pages#index"
+  get '/podcasts/new', to: "static_pages#authenticate"
   get '/podcasts/:id', to: "static_pages#index"
 
   namespace :api do

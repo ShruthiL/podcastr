@@ -3,6 +3,7 @@ import ReviewTile from "../components/ReviewTile";
 
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
+  const [user, setUser] = useState({});
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const PodcastShowContainer = (props) => {
       .then((response) => response.json())
       .then((body) => {
         setPodcast(body.podcast);
+        setUser(body.user);
         setReviews(body.podcast.reviews);
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
