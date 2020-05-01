@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import ReviewTile from "../components/ReviewTile";
+import PodcastReviewFormContainer from "./PodcastReviewFormContainer"
 
 const PodcastShowContainer = (props) => {
   const [podcast, setPodcast] = useState({});
+  const [user, setUser] = useState({});
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
@@ -19,8 +22,9 @@ const PodcastShowContainer = (props) => {
       })
       .then((response) => response.json())
       .then((body) => {
-        setPodcast(body);
+        setPodcast(body.podcast);
         setReviews(body.podcast.reviews);
+        setUser(body.podcast.user)
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));
   }, []);
@@ -34,16 +38,39 @@ const PodcastShowContainer = (props) => {
     });
   }
 
+  const rerender = (review) => {
+    setReviews(
+      [...reviews, review]
+    )
+  }
+
+  let reviewForm;
+  if (user.userName === null) {
+    reviewForm = <></>
+  } else {
+    reviewForm = <PodcastReviewFormContainer
+      id={props.match.params.id}
+      rerender={rerender}
+      user={user} />
+  }
+
   return (
     <div>
-      <p>{podcast.name}</p>
-      <a href={podcast.url} target="_blank">
-        {podcast.url}
-      </a>
+      <div>
+        <p>{podcast.name}</p>
+        <a href={podcast.url} target="_blank">
+          {podcast.url}
+        </a>
+      </div>
+      <div>
+        <h6>Add a Review:</h6>
+        {reviewForm}
+      </div>
       <div>
         <h6>Reviews:</h6>
         {reviewTiles}
       </div>
+      <Link to="/" className="button">All Podcasts</Link>
     </div>
   );
 };

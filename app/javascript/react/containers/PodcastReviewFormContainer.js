@@ -1,48 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
 import { Redirect } from "react-router-dom";
 import _ from "lodash";
 
 import ErrorList from "../components/ErrorList.js";
 
-const PodcastsNewContainer = (props) => {
-  const fields = ["name", "url"];
-  const [podcastRecord, setPodcastRecord] = useState({
-    name: "",
-    url: "",
-  });
-  const [newRecord, setNewRecord] = useState({});
-  const [shouldRedirect, setShouldRedirect] = useState(false);
+const PodcastReviewFormContainer = (props) => {
+  const [reviewRecord, setReviewRecord] = useState({
+    rating: "",
+    review: ""
+   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
-    setPodcastRecord({
-      ...podcastRecord,
+    setReviewRecord({
+      ...reviewRecord,
       [event.currentTarget.id]: event.currentTarget.value,
     });
   };
 
   const validForSubmission = () => {
     let submitErrors = {};
-
-    for (const field of fields) {
-      if (podcastRecord[field].trim() === "") {
-        submitErrors = {
-          ...submitErrors,
-          [field]: `${field} is blank`,
-        };
-      }
-    }
-
-    if (
-      !podcastRecord["url"].includes("http://") &&
-      !podcastRecord["url"].includes("https://")
-    ) {
+    if (reviewRecord["rating"].trim() === "") {
       submitErrors = {
         ...submitErrors,
-        [url]: "url must include full HTTP address",
+        ["rating"]: "Please select a rating"
       };
     }
+
     setErrors(submitErrors);
     return _.isEmpty(submitErrors);
   };
@@ -51,9 +35,14 @@ const PodcastsNewContainer = (props) => {
     event.preventDefault();
     if (validForSubmission()) {
       let formPayload = {
-        podcast: podcastRecord,
+        review: {
+          review: reviewRecord.review,
+          rating: reviewRecord.rating,
+          user_id: props.user.id,
+          podcast_id: props.id
+        }
       };
-      fetch("/api/v1/podcasts", {
+      fetch(`/api/v1/podcasts/${props.id}/reviews`, {
         credentials: "same-origin",
         method: "POST",
         body: JSON.stringify(formPayload),
@@ -74,47 +63,47 @@ const PodcastsNewContainer = (props) => {
         })
         .then((response) => response.json())
         .then((body) => {
-          let newPodcast = body.podcast;
-          setNewRecord(newPodcast);
-          setShouldRedirect(true);
+          props.rerender(body.review)
+          setReviewRecord({
+            rating: "",
+            review: ""
+           })
         })
         .catch((error) => console.error(`Error in fetch: ${error.message}`));
     }
   };
 
-  if (shouldRedirect) {
-    return <Redirect to={`/podcasts/${newRecord.id}`} />;
-  }
-
   return (
     <div>
       <ErrorList errors={errors} />
-      <form className="new-podcast" onSubmit={onSubmit}>
+      <form className="new-review" onSubmit={onSubmit}>
         <label>
-          Name:
-          <input
-            type="text"
-            id="name"
-            onChange={handleChange}
-            value={podcastRecord.name}
-          />
+          Rating:
+          <select id="rating" value={reviewRecord.rating} onChange={handleChange}>
+            <option value=""></option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
         </label>
 
         <label>
-          URL:
+          Review:
           <input
             type="text"
-            id="url"
+            id="review"
             onChange={handleChange}
-            value={podcastRecord.url}
+            value={reviewRecord.review}
           />
         </label>
 
         <input className="button" type="submit" value="Submit" />
       </form>
-      <Link to="/" className="button">All Podcasts</Link>
     </div>
   );
 };
 
-export default PodcastsNewContainer;
+export default PodcastReviewFormContainer;

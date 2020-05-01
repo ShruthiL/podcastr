@@ -3,12 +3,14 @@ Rails.application.routes.draw do
   devise_for :users
 
   get '/podcasts', to: "static_pages#index"
-  get '/podcasts/new', to: "static_pages#index"
+  get '/podcasts/new', to: "static_pages#authenticate"
   get '/podcasts/:id', to: "static_pages#index"
 
   namespace :api do
     namespace :v1 do
-      resources :podcasts, only: [:index, :create, :show, :destroy]
+      resources :podcasts, only: [:index, :create, :show, :destroy] do
+        resources :reviews, only: [:create]
+      end
     end
   end
 end
