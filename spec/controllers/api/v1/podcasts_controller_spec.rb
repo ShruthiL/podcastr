@@ -85,14 +85,14 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
 
       expect(response_body["podcast"]["name"]).to eq podcast1.name
       expect(response_body["podcast"]["url"]).to eq podcast1.url
-      expect(response_body["user"]["user_name"]).to eq "test_user3"
-      expect(response_body["user"]["admin"]).to eq false
+      expect(response_body["podcast"]["user"]["userName"]).to eq "test_user3"
+      expect(response_body["podcast"]["user"]["admin"]).to eq false
       expect(response_body["podcast"]["reviews"][0]["review"]).to eq review1.review
       expect(response_body["podcast"]["reviews"][0]["rating"]).to eq review1.rating
 
       expect(response_body["podcast"]["name"]).to_not eq podcast2.name
       expect(response_body["podcast"]["url"]).to_not eq podcast2.url
-      expect(response_body["user"]["user_name"]).to_not eq "test_user4"
+      expect(response_body["podcast"]["user"]["userName"]).to_not eq "test_user4"
       expect(response_body["podcast"]["reviews"][0]["review"]).to_not eq review2.review
       expect(response_body["podcast"]["reviews"][0]["rating"]).to_not eq review2.rating
     end
@@ -105,8 +105,8 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
 
       expect(response_body["podcast"]["name"]).to eq podcast1.name
       expect(response_body["podcast"]["url"]).to eq podcast1.url
-      expect(response_body["user"]["user"]["user_name"]).to eq ""
-      expect(response_body["user"]["user"]["admin"]).to eq false
+      expect(response_body["podcast"]["user"]["userName"]).to eq nil
+      expect(response_body["podcast"]["user"]["admin"]).to eq nil
       expect(response_body["podcast"]["reviews"][0]["review"]).to eq review1.review
       expect(response_body["podcast"]["reviews"][0]["rating"]).to eq review1.rating
 
