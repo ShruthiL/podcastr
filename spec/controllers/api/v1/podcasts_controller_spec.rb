@@ -23,13 +23,12 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       get :index
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 2
+      expect(response_body.length).to eq 1
+      expect(response_body["podcasts"][0]["name"]).to eq podcast1.name
+      expect(response_body["podcasts"][0]["url"]).to eq podcast1.url
 
-      expect(response_body["podcast"][0]["name"]).to eq podcast1.name
-      expect(response_body["podcast"][0]["url"]).to eq podcast1.url
-
-      expect(response_body["podcast"][1]["name"]).to eq podcast2.name
-      expect(response_body["podcast"][1]["url"]).to eq podcast2.url
+      expect(response_body["podcasts"][1]["name"]).to eq podcast2.name
+      expect(response_body["podcasts"][1]["url"]).to eq podcast2.url
     end
   end
 
@@ -77,7 +76,7 @@ RSpec.describe Api::V1::PodcastsController, type: :controller do
       get :show, params: {id: podcast1.id}
       response_body = JSON.parse(response.body)
 
-      expect(response_body["podcast"].length).to eq 4
+      expect(response_body["podcast"].length).to eq 5
 
       expect(response_body["podcast"]["name"]).to eq podcast1.name
       expect(response_body["podcast"]["url"]).to eq podcast1.url

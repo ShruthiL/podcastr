@@ -19,7 +19,7 @@ const PodcastShowContainer = (props) => {
       })
       .then((response) => response.json())
       .then((body) => {
-        setPodcast(body);
+        setPodcast(body.podcast);
         setReviews(body.podcast.reviews);
       })
       .catch((error) => console.error(`Error in fetch: ${error.message}`));

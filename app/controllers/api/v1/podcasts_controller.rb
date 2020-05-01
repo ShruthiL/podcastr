@@ -2,16 +2,7 @@ class Api::V1::PodcastsController < ApplicationController
     protect_from_forgery unless: -> { request.format.json? }
 
     def index
-        podcast = Podcast.all
-        if current_user
-            user = ActiveModelSerializers::SerializableResource.new(current_user, each_serializer: UserSerializer)
-        else
-            user = {user: {id: "", user_name: "", admin: false} }
-        end
-        render json: {
-            podcast: podcast,
-            user: user
-        }
+        render json: Podcast.all
     end
 
     def create
@@ -24,8 +15,7 @@ class Api::V1::PodcastsController < ApplicationController
     end
 
     def show
-        podcast = Podcast.find(params[:id])
-        render json: podcast
+        render json: Podcast.find(params[:id])
     end
 
     def destroy
