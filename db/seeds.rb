@@ -8,7 +8,13 @@
 
 
 User.create(email: "c.a.ellinger+admin@gmail.com", first_name: "Christie", last_name: "Ellinger", user_name: "cellingeradmin", password: "testtest", admin: true)
-User.create(email: "c.a.ellinger+user@gmail.com", first_name: "Christie", last_name: "Ellinger", user_name: "cellingeruser", password: "testtest", admin: true)
+User.create(email: "c.a.ellinger+user@gmail.com", first_name: "Christie", last_name: "Ellinger", user_name: "cellingeruser", password: "testtest", admin: false)
+User.create(email: "monizri+admin@gmail.com", first_name: "Matt", last_name: "Moniz", user_name: "mmonizadmin", password: "password", admin: true)
+User.create(email: "monizri+user@gmail.com", first_name: "Matt", last_name: "Moniz", user_name: "mmonizuser", password: "password", admin: false)
+User.create(email: "wesley.adams.davis+admin@gmail.com", first_name: "Wes", last_name: "Davis", user_name: "wdavisadmin", password: "password", admin: true)
+User.create(email: "wesley.adams.davis+user@gmail.com", first_name: "Wes", last_name: "Davis", user_name: "wdavisuser", password: "password", admin: false)
+User.create(email: "Sruthiraj.lagisetty+admin@gmail.com", first_name: "Shruthi", last_name: "Lagisetty", user_name: "slagisettyadmin", password: "password", admin: true)
+User.create(email: "Sruthiraj.lagisetty+user@gmail.com", first_name: "Shruthi", last_name: "Lagisetty", user_name: "slagisettyuser", password: "password", admin: false)
 
 
 Podcast.create(name: "Reply All", url: "https://gimletmedia.com/shows/reply-all")
