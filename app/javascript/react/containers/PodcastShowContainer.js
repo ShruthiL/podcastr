@@ -64,10 +64,7 @@ const PodcastShowContainer = (props) => {
           </a>
         </div>
       </div>
-      <div className="callout">
-        <h4>Add a Review:</h4>
-        {reviewForm}
-      </div>
+      {reviewForm}
       <div className="callout">
         <h4>Reviews:</h4>
         {reviewTiles}
