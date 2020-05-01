@@ -89,30 +89,33 @@ const PodcastsNewContainer = (props) => {
   return (
     <div>
       <ErrorList errors={errors} />
-      <form className="new-podcast" onSubmit={onSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            id="name"
-            onChange={handleChange}
-            value={podcastRecord.name}
-          />
-        </label>
+      <div className="callout">
+        <h4 className="center">Add a Podcast</h4>
+        <form className="new-podcast" onSubmit={onSubmit}>
+          <label>
+            Name:
+            <input
+              type="text"
+              id="name"
+              onChange={handleChange}
+              value={podcastRecord.name}
+            />
+          </label>
 
-        <label>
-          URL:
-          <input
-            type="text"
-            id="url"
-            onChange={handleChange}
-            value={podcastRecord.url}
-          />
-        </label>
+          <label>
+            URL:
+            <input
+              type="text"
+              id="url"
+              onChange={handleChange}
+              value={podcastRecord.url}
+            />
+          </label>
 
-        <input className="button" type="submit" value="Submit" />
-      </form>
-      <Link to="/" className="button">All Podcasts</Link>
+          <input className="button center" type="submit" value="Submit" />
+        </form>
+      </div>
+      <Link to="/" className="button center">All Podcasts</Link>
     </div>
   );
 };

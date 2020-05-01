@@ -46,3 +46,28 @@ body {
 .center {
   text-align: center;
 }
+
+.button {
+  background-color: #3D5A80;
+}
+
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.callout a.button {
+  color: white;
+  text-decoration: none;
+}
+
+.delete {
+  float: right;
+  background-color: #EE6C4D;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.review.callout {
+  background-color: white;
+}

@@ -56,18 +56,20 @@ const PodcastShowContainer = (props) => {
 
   return (
     <div>
-      <div>
-        <p>{podcast.name}</p>
-        <a href={podcast.url} target="_blank">
-          {podcast.url}
-        </a>
+      <div className="grid-container no-padding">
+        <div className="grid-x grid-margin-x callout">
+          <h3 className="cell small-8 large-10">{podcast.name}</h3>
+          <a className="button cell small-4 large-2 listen" href={podcast.url} target="_blank">
+            Listen Here
+          </a>
+        </div>
       </div>
-      <div>
-        <h6>Add a Review:</h6>
+      <div className="callout">
+        <h4>Add a Review:</h4>
         {reviewForm}
       </div>
-      <div>
-        <h6>Reviews:</h6>
+      <div className="callout">
+        <h4>Reviews:</h4>
         {reviewTiles}
       </div>
       <Link to="/" className="button">All Podcasts</Link>
