@@ -45,13 +45,13 @@ const PodcastShowContainer = (props) => {
   }
 
   let reviewForm;
-  if (user.userName === null) {
-    reviewForm = <></>
-  } else {
+  if (user.userName != null) {
     reviewForm = <PodcastReviewFormContainer
       id={props.match.params.id}
       rerender={rerender}
       user={user} />
+  } else {
+    reviewForm = <></>
   }
 
   return (
