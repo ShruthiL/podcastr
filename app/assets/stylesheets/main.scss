@@ -28,7 +28,7 @@ body {
 }
 
 .content {
-    margin: 2em;
+    margin: 2em auto;
     margin-top: 3em;
 }
 
@@ -41,4 +41,8 @@ body {
   font-size: 18px;
   color: #3D5A80;
   text-decoration: underline;
+}
+
+.center {
+  text-align: center;
 }
