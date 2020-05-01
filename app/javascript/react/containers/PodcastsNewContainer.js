@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import { Redirect } from "react-router-dom";
 import _ from "lodash";
 
@@ -111,6 +112,7 @@ const PodcastsNewContainer = (props) => {
 
         <input className="button" type="submit" value="Submit" />
       </form>
+      <Link to="/" className="button">All Podcasts</Link>
     </div>
   );
 };
