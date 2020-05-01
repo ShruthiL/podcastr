@@ -31,3 +31,14 @@ body {
     margin: 2em;
     margin-top: 3em;
 }
+
+.callout {
+  border: 3px solid black;
+  background-color: #EEEEEE;
+}
+
+.callout a {
+  font-size: 18px;
+  color: #3D5A80;
+  text-decoration: underline;
+}

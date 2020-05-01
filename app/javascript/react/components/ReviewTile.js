@@ -2,7 +2,7 @@ import React from "react";
 
 const ReviewTile = (props) => {
     return (
-        <div>
+        <div className="callout">
             <p> {props.review.rating}/5</p>
             <p> {props.review.review}</p>
         </div>

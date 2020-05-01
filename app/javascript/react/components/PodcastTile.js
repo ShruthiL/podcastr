@@ -9,7 +9,7 @@ const PodcastTile = (props) => {
   }
 
   return (
-    <div className="podcast-tile">
+    <div className="podcast-tile callout">
       <Link to={`/podcasts/${props.podcast.id}`}>{props.podcast.name}</Link>
       {deleteButton}
     </div>
